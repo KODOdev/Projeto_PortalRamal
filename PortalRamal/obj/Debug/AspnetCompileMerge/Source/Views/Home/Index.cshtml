@@ -1,0 +1,78 @@
+﻿@using PortalRamal.Models
+@model PortalRamal.Models.Usuario
+@{
+    ViewBag.Title = "Portal Ramal";
+}
+
+@if (ViewBag.Path == null)
+{
+    <fieldset>
+        <legend>Ocorreu um problema!</legend>
+        <div class="panel-info"><strong>Path não configurado favor contate o administrador do sistema.</strong></div>
+    </fieldset>
+
+}
+else if (ViewBag.Error == true)
+{
+<fieldset>
+    <legend>Ocorreu um problema!</legend>
+
+    <div class="panel-info">
+       @if (TempData["UserMessage"] != null)
+                {
+                    var message = (MessageVM)TempData["UserMessage"];
+        <div class="alert @message.CssClassName">
+            <strong>@message.Title</strong>
+            @message.Message
+        </div>
+       }
+    </div>
+</fieldset>
+
+}
+else
+{
+    using (Html.BeginForm("Update", "Home", FormMethod.Post, new { data_toggle = "validator", role = "form" }))
+    {
+        <fieldset>
+            <legend>Atualizar Informações</legend>
+            <div class="form-group">
+                <label for="textNome" class="control-label">Nome</label>
+                @Html.TextBoxFor(m => m.Nome, new { data_error = "Favor informe um nome.", @class = "form-control", id = "textNome", required = "required" })
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group">
+                <label for="inputUnidade" class="control-label">Unidade</label>
+                @Html.TextBoxFor(m => m.Unidade, new { data_error = "Por favor, informe uma unidade.", @class = "form-control", id = "inputUnidade", required = "required" })
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group">
+                <label for="inputEdificio" class="control-label">Edificio</label>
+                @Html.DropDownListFor(m => m.SelectedEdificio, Model.Edificio, new { data_error = "Por favor, informe um Edificio.", @class = "form-control", id = "inputEdificio", required = "required" })
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group">
+                <label for="inputEdificio" class="control-label">Andar</label>
+                @Html.DropDownListFor(m => m.SelectedAndar, Model.Andar, new { data_error = "Por favor, informe um Edificio.", @class = "form-control", id = "inputAndar", required = "required" })
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group">
+                <label for="inputRamal" class="control-label">Ramal</label>
+                @Html.TextBoxFor(m => m.Ramal, new { type = "number", data_error = "Favor informe um ramal.", @class = "form-control", id = "inputRamal", required = "required" })
+                @*<select class="form-control" id="inputRamal" placeholder="Ramal" data-error="Favor informe ramal." required></select>*@
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+                @if (TempData["UserMessage"] != null)
+                {
+                    var message = (MessageVM)TempData["UserMessage"];
+                    <div class="alert @message.CssClassName">
+                        <strong>@message.Title</strong>
+                        @message.Message
+                    </div>
+                }
+            </div>
+        </fieldset>
+        }
+    }
